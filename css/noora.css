@@ -853,6 +853,13 @@ img {
     margin-top: 16px;
     font-size: 1rem;
     padding: 14px 32px;
+    color: #fff;
+    background: var(--bg-dark);
+}
+
+.mobile-overlay .nav-cta:hover {
+    background: var(--bg-dark);
+    color: #fff;
 }
 
 /* ============================================
@@ -1091,7 +1098,7 @@ img {
     .pn-title { font-size: 0.92rem; }
 
     /* Lightbox */
-    .lightbox-img { max-width: 96%; border-radius: 8px; }
+    .lightbox-img { max-width: 96vw; border-radius: 8px; }
     .lightbox-close { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 1.2rem; }
     .lightbox-prev,
     .lightbox-next {
@@ -1453,7 +1460,7 @@ img {
 }
 
 .lightbox-img {
-    max-width: 92%;
+    max-width: 92vw;
     max-height: 92vh;
     object-fit: contain;
     border-radius: 12px;
@@ -1506,4 +1513,77 @@ img {
 .lightbox-prev:hover,
 .lightbox-next:hover {
     background: rgba(255,255,255,0.2);
+}
+
+/* ============================================
+   MEDIA PROTECTION — deter casual image copying
+   ============================================ */
+img,
+video {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none; /* iOS long-press "Save Image" menu */
+}
+
+/* Content images live inside clickable links / wrappers, so disabling
+   pointer events on the image itself blocks "Save image as…" and drag,
+   while card navigation and the lightbox keep working via the parent. */
+.case-image img,
+.project-hero-img img,
+.project-img-wrap img,
+.lightbox-img {
+    pointer-events: none;
+}
+
+/* ============================================
+   WATERMARK — "Quý Tiên Nguyễn" overlay on images
+   The tiled SVG is injected as --wm-bg by js/watermark.js
+   ============================================ */
+.case-image,
+.project-hero-img,
+.project-img-wrap {
+    position: relative;
+}
+
+.case-image:has(img)::after,
+.project-hero-img:has(img)::after,
+.project-img-wrap:has(img)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--wm-bg, none);
+    background-repeat: repeat;
+    background-position: center;
+    background-size: 300px 200px;
+    opacity: 0.55;
+    z-index: 3;
+}
+
+/* Watermark inside the lightbox — covers only the enlarged image */
+.lightbox-stage {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.lightbox-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--wm-bg, none);
+    background-repeat: repeat;
+    background-position: center;
+    background-size: 300px 200px;
+    opacity: 0.55;
 }
